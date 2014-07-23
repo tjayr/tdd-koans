@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.liberty.it.driving.license.service.api.DrivingLicenseServiceApi;
+
 public class DrivingLicenseServiceTest {
 
 	private static final List<String> VALID_LICENSE_DATA = new ArrayList<>();
@@ -17,7 +19,7 @@ public class DrivingLicenseServiceTest {
 
 	@Test
 	public void testFindLicenseByName() {
-		DrivingLicenseService dls = new DrivingLicenseService();
+		DrivingLicenseServiceApi dls = new DrivingLicenseService();
 		List<String> result = dls.findLicenseByName("John", "Jones");
 		assertEquals(VALID_LICENSE_DATA, result);
 		assertTrue(dls.findLicenseByName("Nobody", "").isEmpty());

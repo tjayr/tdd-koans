@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class DrivingLicenseService {
+import com.liberty.it.driving.license.service.api.DrivingLicenseServiceApi;
+
+public class DrivingLicenseService implements DrivingLicenseServiceApi {
 
 	private Map<String, List<String>> database = new ConcurrentHashMap<>();
 
@@ -23,6 +25,10 @@ public class DrivingLicenseService {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see com.liberty.it.driving.license.service.DrivingLicenseServiceApi#findLicenseByName(java.lang.String, java.lang.String)
+	 */
+	@Override
 	public List<String> findLicenseByName(String firstName, String lastName) {
 		return database.getOrDefault(firstName + "_" + lastName,
 				new ArrayList<>());
