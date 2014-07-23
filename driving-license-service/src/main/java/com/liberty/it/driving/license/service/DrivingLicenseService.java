@@ -22,11 +22,13 @@ public class DrivingLicenseService implements DrivingLicenseServiceApi {
 		database.put("John_Jones", both);
 		database.put("Peter_Smith", car);
 		database.put("Franklin_Roosevelt", car);
-
 	}
 
-	/* (non-Javadoc)
-	 * @see com.liberty.it.driving.license.service.DrivingLicenseServiceApi#findLicenseByName(java.lang.String, java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.liberty.it.driving.license.service.DrivingLicenseServiceApi#
+	 * findLicenseByName(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public List<String> findLicenseByName(String firstName, String lastName) {
@@ -38,6 +40,5 @@ public class DrivingLicenseService implements DrivingLicenseServiceApi {
 			List<String> licenseTypes) {
 		database.put(firstName + "_" + lastName, licenseTypes);
 	}
-	
-	
+
 }

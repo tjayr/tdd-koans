@@ -16,14 +16,13 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.liberty.it.driving.license.service.DrivingLicenseService;
 
-
 @RunWith(MockitoJUnitRunner.class)
 public class DataManagerTest {
 
 	private List<String> allLicenses = new ArrayList<String>();
 	private List<String> carLicenses = new ArrayList<String>();
 	private Employee testEmployee;
-	
+
 	@Mock
 	private DrivingLicenseService drivingLicenseService;
 
@@ -40,14 +39,16 @@ public class DataManagerTest {
 		testEmployee.setLastName("Jones");
 		testEmployee.setLicensesHeld(allLicenses);
 		testEmployee.setDob(LocalDate.of(1980, 5, 5));
-		
-		when(drivingLicenseService.findLicenseByName(any(String.class), any(String.class))).thenReturn(allLicenses);
+
+		when(
+				drivingLicenseService.findLicenseByName(any(String.class),
+						any(String.class))).thenReturn(allLicenses);
 	}
 
 	@Test
 	public void testCreateEmployee() {
 		DataManager manager = new DataManager(drivingLicenseService);
-		
+
 		Employee result = manager.createEmployee("Jim", "Jones",
 				LocalDate.of(1980, 5, 5), allLicenses);
 		assertEquals(testEmployee, result);
@@ -56,9 +57,10 @@ public class DataManagerTest {
 	@Test(expected = IllegalStateException.class)
 	public void testCreateEmployeeFailsDriverHasNoLicense() {
 		DataManager manager = new DataManager(drivingLicenseService);
-		when(drivingLicenseService.findLicenseByName(any(String.class), any(String.class))).thenReturn(carLicenses);
-		Employee result = manager.createEmployee("Frank", "Grimes",
-				LocalDate.of(1980, 5, 5), carLicenses);		
+		when(drivingLicenseService.findLicenseByName("Frank", "Grimes"))
+				.thenReturn(carLicenses);
+		manager.createEmployee("Frank", "Grimes", LocalDate.of(1980, 5, 5),
+				carLicenses);
 	}
 
 	@Test(expected = IllegalStateException.class)
@@ -72,24 +74,24 @@ public class DataManagerTest {
 	@Test
 	public void testGetAllEmployees() {
 		DataManager manager = new DataManager(drivingLicenseService);
+		manager.createEmployee(testEmployee.getFirstName(),
+				testEmployee.getLastName(), testEmployee.getDob(),
+				testEmployee.getLicensesHeld());
 		Map<String, Employee> all = manager.getAllEmployees();
+		assertEquals(1, all.size());
+		assertEquals(
+				testEmployee,
+				all.get(testEmployee.getFirstName()
+						+ testEmployee.getLastName()));
 	}
-
-	@Test
-	public void verifyCreatingInValidEmployeeFails() {
-		DataManager manager = new DataManager(drivingLicenseService);		
-	}
-
+	
 	@Test
 	public void testValidateEmployeeAge() {
 		DataManager manager = new DataManager(drivingLicenseService);
-		assertTrue(manager.isEmployeeOfLegalDrivingAge(LocalDate.of(1980, 5, 5)));
-		assertFalse(manager.isEmployeeOfLegalDrivingAge(LocalDate.of(2014, 5, 5)));
-	}
-
-	@Test
-	public void testValidateEmployeeLicense() {
-		
+		assertTrue(manager
+				.isEmployeeOfLegalDrivingAge(LocalDate.of(1980, 5, 5)));
+		assertFalse(manager.isEmployeeOfLegalDrivingAge(LocalDate
+				.of(2014, 5, 5)));
 	}
 
 }
